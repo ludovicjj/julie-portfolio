@@ -1,0 +1,13 @@
+.image-preview.active {
+    padding-bottom: 1rem;
+
+}
+.image-preview {
+    width: fit-content;
+}
+.image-preview img {
+    width: 100%;
+    height: auto;
+    /*max-height: 400px;*/
+    /*object-fit: cover;*/
+}

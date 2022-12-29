@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/picture/pictures.css')}}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/picture.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Ma bibliothèque</h1>
+        {% set total = pictures|length %}
+
+        <p class="m-0">
+            La bibliothèque est actuellement composé de
+            <span data-count="{{ total }}" class="picture_count">{{ total }}</span>
+            élément{{ total ? 's' : '' }}
+        </p>
+        <div class="row">
+            <div class="col-12">
+                <a class="btn btn-primary btn-sm my-3" href="{{ path('app_picture_new') }}" role="button">
+                    Ajouter une image
+                </a>
+            </div>
+            <div class="d-grid picture_container">
+                {% for picture in pictures %}
+                    <div class="picture_item">
+                        <a class="picture_delete" data-url="{{ path('app_picture_delete', {id: picture.id}) }}">
+                            <i class="fa-sharp fa-solid fa-circle-xmark"></i>
+                        </a>
+                        <div class="spinner">
+                            <i class="fa-solid fa-spinner"></i>
+                        </div>
+                        <img src="{{ asset('uploads/pictures/' ~ picture.pictureFileName) }}" alt="{{ picture.name }}" class="picture_img">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

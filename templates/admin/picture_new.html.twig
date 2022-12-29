@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/picture.js') }}" defer></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/picture/picture_new.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Ajouter un image</h1>
+
+        <a class="btn btn-primary btn-sm my-3" href="{{ path('app_picture') }}" role="button">
+            Retour à ma bibliothèque
+        </a>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="form-group">
+                {{ form_row(form.name) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_row(form.pictureFile, {'attr': {'class': 'custom-file-input'}}) }}
+            </div>
+
+            <div class="image-preview"></div>
+            {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

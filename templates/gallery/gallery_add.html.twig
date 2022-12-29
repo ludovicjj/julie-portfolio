@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% form_theme form _self %}
+{% use "form/checkbox_radio_label.html.twig" %}
+
+{% block title %}
+    Galerie-Ajouter
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/gallery.js') }}" defer></script>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gallery/gallery_new.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <header class="gallery-title">
+            <h1>Ajouter une galerie</h1>
+            <div>
+                <a href="{{ path('app_gallery') }}" class="btn btn-primary btn-sm">Retour à mes Galeries</a>
+            </div>
+        </header>
+        <section class="gallery-action">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_row(form.title) }}
+
+            {{ form_row(form.description) }}
+
+            <span class="d-block mb-2">Images</span>
+            <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="pictures">Télécharger une image</button>
+            <ul class="pictures"
+                data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}"
+                data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
+            >
+                {% for pictureField in form.images %}
+                    <li>
+                        {{ form_row(pictureField) }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {{ form_label(form.collection) }}
+            {{ form_help(form.collection) }}
+            {{ form_widget(form.collection) }}
+            {{ form_errors(form.collection) }}
+
+            {{ form_end(form) }}
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <h1>Vos Galleries</h1>
+        <a href="{{ path("app_gallery_new") }}" class="btn btn-primary btn-sm mb-3">Ajouter une gallerie</a>
+        <div class="row">
+            {% for gallery in galleries %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ gallery.title }}</h5>
+                            <p class="card-text">{{ gallery.description }}</p>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ path("app_gallery_show", {id: gallery.id}) }}" class="card-link">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ gallery.title }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("css/gallery/gallery_new.css") }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <header class="gallery-title">
+            <h1>{{ gallery.title }}</h1>
+            <div>
+                <a href="{{ path('app_gallery') }}" class="btn btn-primary btn-sm">Retour à mes Galleries</a>
+                <a href="{{ path('app_gallery') }}" class="btn btn-primary btn-sm">Modifier</a>
+            </div>
+        </header>
+        <section class="gallery-description">
+            <h3>Description</h3>
+            <p>{{ gallery.description }}</p>
+        </section>
+        <div class="wrapper_picture">
+            {% for picture in gallery.pictures %}
+                <div class="picture_item">
+                    <img src="{{ asset('uploads/pictures/' ~ picture.pictureFileName) }}" alt="{{ picture.name }}" class="picture_img">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
