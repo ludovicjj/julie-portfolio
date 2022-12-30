@@ -13,6 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class GalleryType extends AbstractType
 {
@@ -33,13 +37,25 @@ class GalleryType extends AbstractType
                 "label" => false,
                 "mapped" => false,
                 "entry_type" => FileType::class,
+                'error_bubbling' => false,
                 "entry_options" => [
                     "row_attr" => ["class" => "image_row"],
                     "label" => "__default-img",
                     "label_html" => true,
                     "label_attr" => [
                         "class" => "image_label"
-                    ]
+                    ],
+                    'constraints' => [
+                        new File([
+                            'maxSize' => '1024k',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png',
+                            ],
+                            'mimeTypesMessage' => 'Seuls les fichiers JPEG, JPG et PNG sont autorisés.',
+                        ])
+                    ],
+                    'error_bubbling' => true
                 ],
                 "allow_add" => true,
                 "allow_delete" => true
@@ -68,7 +84,7 @@ class GalleryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Gallery::class,
+            'data_class' => Gallery::class
         ]);
     }
 }

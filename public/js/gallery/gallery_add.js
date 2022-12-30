@@ -1,3 +1,6 @@
+// Clear collectionHolder when submit
+const imageWrapper = document.querySelector('.image_wrapper');
+imageWrapper.replaceChildren();
 
 const addFormToCollection = (e) => {
     const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
@@ -30,6 +33,7 @@ document
         btn.addEventListener("click", addFormToCollection)
     });
 
+// Remove form to collection
 const handleDelete = (e) => {
     e.preventDefault();
     let item = e.currentTarget.closest('.image_item')
@@ -41,6 +45,7 @@ const handleDelete = (e) => {
     }
 }
 
+// Load preview image
 const handleChange = (e) => {
     let inputFile = e.currentTarget;
     let imageLabel = inputFile.closest('.image_item').querySelector('.image_label img');

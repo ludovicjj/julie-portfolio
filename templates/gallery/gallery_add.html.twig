@@ -29,6 +29,18 @@
 
             <span class="d-block mb-2">Images</span>
             <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="image_wrapper">Ajouter une image</button>
+            <div class="images_feedback">
+                {% if not form.images.vars.valid %}
+                    {% set errors_message = []  %}
+                    {%for error in form.images.vars.errors%}
+                        {% set errors_message = errors_message|merge([error.message]) %}
+                    {%endfor%}
+                    {% for message in errors_message|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
+                        <div class="invalid-feedback d-block">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
             <div class="image_wrapper"
                 data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}"
                 data-prototype="{{ form_row(form.images.vars.prototype)|e('html_attr') }}"
