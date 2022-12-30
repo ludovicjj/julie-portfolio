@@ -7,10 +7,11 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/gallery.js') }}" defer></script>
+    <script src="{{ asset('js/gallery/gallery_add.js') }}" defer></script>
 {% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/gallery/gallery_new.css') }}">
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/gallery/gallery_add.css') }}">
 {% endblock %}
 {% block body %}
     <div class="container">
@@ -27,22 +28,25 @@
             {{ form_row(form.description) }}
 
             <span class="d-block mb-2">Images</span>
-            <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="pictures">Télécharger une image</button>
-            <ul class="pictures"
+            <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="image_wrapper">Ajouter une image</button>
+            <div class="image_wrapper"
                 data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}"
-                data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
+                data-prototype="{{ form_row(form.images.vars.prototype)|e('html_attr') }}"
             >
                 {% for pictureField in form.images %}
-                    <li>
-                        {{ form_row(pictureField) }}
-                    </li>
+                    {{ form_row(pictureField) }}
                 {% endfor %}
-            </ul>
+            </div>
 
             {{ form_label(form.collection) }}
             {{ form_help(form.collection) }}
             {{ form_widget(form.collection) }}
             {{ form_errors(form.collection) }}
+
+            <nav aria-label="Collection navigation">
+                <ul class="pagination">
+                </ul>
+            </nav>
 
             {{ form_end(form) }}
         </section>

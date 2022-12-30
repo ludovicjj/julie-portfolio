@@ -22,6 +22,7 @@ class GalleryType extends AbstractType
             ->add("title", TextType::class, [
                 'label' => 'titre de la galerie *',
                 "help" => "Le titre de votre galerie",
+                'required' => true,
             ])
             ->add("description", TextareaType::class, [
                 'label' => 'Description *',
@@ -29,11 +30,19 @@ class GalleryType extends AbstractType
                 'help' => 'Une courte description de votre galerie'
             ])
             ->add("images", CollectionType::class, [
-                'label' => false,
+                "label" => false,
                 "mapped" => false,
-                'entry_type' => FileType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
+                "entry_type" => FileType::class,
+                "entry_options" => [
+                    "row_attr" => ["class" => "image_row"],
+                    "label" => "__default-img",
+                    "label_html" => true,
+                    "label_attr" => [
+                        "class" => "image_label"
+                    ]
+                ],
+                "allow_add" => true,
+                "allow_delete" => true
             ])
             ->add("collection", EntityType::class, [
                 "class" => Picture::class,
@@ -51,7 +60,7 @@ class GalleryType extends AbstractType
                 }
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Ajouter'
+                'label' => 'Sauvegarder'
             ])
         ;
     }

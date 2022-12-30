@@ -6,6 +6,7 @@ use App\Repository\GalleryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GalleryRepository::class)]
 class Gallery
@@ -16,9 +17,11 @@ class Gallery
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Vous devez donner un titre à votre galerie.")]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Vous devez donner une description à votre galerie.")]
     private ?string $description = null;
 
     #[ORM\ManyToMany(targetEntity: Picture::class, cascade: ["persist"])]

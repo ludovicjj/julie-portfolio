@@ -1,0 +1,134 @@
+/** Gallery Action **/
+.gallery-action {
+    padding: 1rem;
+    box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
+    border-radius: .5rem;
+    margin-bottom: 5rem;
+}
+/** Images **/
+.image_wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .625rem;
+}
+.image_item {
+    position: relative;
+}
+.image_item i {
+    position: absolute;
+    z-index: 1;
+    right: 16px;
+    top: 14px;
+    color: #478bfb;
+    font-size: 22px;
+}
+.image_row {
+    height: 300px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
+}
+.image_wrapper .image_item .image_label {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.default_img {
+    width: 70%;
+    height: 200px;
+    object-fit: cover;
+}
+.image_wrapper input[type="file"] {
+    display: none;
+}
+
+/** Bibliothèque Pagination **/
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+/** Bibliothèque **/
+#gallery_collection {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 1rem;
+}
+.form-check {
+    width: 100%;
+    height: 200px;
+    background-color: #ffffff;
+    box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+input[type="checkbox"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 1px;
+    border: none;
+    display: block;
+    cursor: pointer;
+    box-shadow: none;
+}
+input[type="checkbox"]:checked, input[type="checkbox"]:focus {
+    box-shadow: none;
+    border: none;
+    background-color: #FFFFFF;
+}
+input[type="checkbox"]:active {
+    filter: none;
+}
+input[type="checkbox"]:after {
+    position: absolute;
+    font-family: "Font Awesome 5 Free", sans-serif;
+    font-weight: 400;
+    content: "\f111";
+    font-size: 18px;
+    color: #478bfb;
+    right: 16px;
+    top: 5px;
+}
+input[type="checkbox"]:checked:after {
+    font-weight: 900;
+    content: "\f058";
+    color: #478bfb;
+}
+.form-check img {
+    width: 70%;
+    height: 150px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+    object-fit: cover;
+}
+@media screen and (min-width: 950px) {
+    #gallery_collection {
+        grid-template-columns: repeat(4, 1fr);
+        gap: .625rem;
+    }
+    .form-check {
+        height: 300px;
+    }
+    .form-check img {
+        height: 200px;
+    }
+    input[type="checkbox"]:after {
+        font-size: 22px;
+    }
+}
