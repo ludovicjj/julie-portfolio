@@ -26,7 +26,7 @@ class PictureController extends AbstractController
         $pictureRepository = $this->entityManager->getRepository(Picture::class);
         $pictures = $pictureRepository->findAll();
 
-        return $this->render('admin/picture.html.twig', [
+        return $this->render('admin/picture/picture.html.twig', [
             'pictures' => $pictures
         ]);
     }
@@ -60,7 +60,7 @@ class PictureController extends AbstractController
 
         }
 
-        return $this->render('admin/picture_new.html.twig', [
+        return $this->render('admin/picture/picture_new.html.twig', [
             'form' => $form
         ]);
     }

@@ -18,7 +18,7 @@ class GalleryController extends AbstractController
     #[Route('/admin/gallery', name: "app_gallery")]
     public function index(GalleryRepository $galleryRepository): Response
     {
-        return $this->render('gallery/gallery_index.html.twig', [
+        return $this->render('admin/gallery/gallery_index.html.twig', [
             "galleries" => $galleryRepository->findAll()
         ]);
     }
@@ -56,7 +56,7 @@ class GalleryController extends AbstractController
             return $this->redirectToRoute("app_gallery");
         }
 
-        return $this->render('gallery/gallery_add.html.twig', [
+        return $this->render('admin/gallery/gallery_add.html.twig', [
             'form' => $form
         ]);
     }
@@ -69,7 +69,7 @@ class GalleryController extends AbstractController
         if (!$gallery) {
             dd("NotFoundHttpException");
         }
-        return $this->render('gallery/gallery_show.html.twig', [
+        return $this->render('admin/gallery/gallery_show.html.twig', [
             "gallery" => $gallery
         ]);
     }

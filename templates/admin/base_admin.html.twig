@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/component/admin_sidebar.js') }}" defer></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/menu/admin_sidebar.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include "_partial/admin_side_nav.html.twig" %}
+{% endblock %}

@@ -19,7 +19,7 @@
     z-index: 1;
     right: 16px;
     top: 14px;
-    color: #478bfb;
+    color: #0b5ed7;
     font-size: 22px;
 }
 .image_row {
@@ -56,7 +56,7 @@
 #gallery_collection {
     display: grid;
     gap: 15px;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     margin-bottom: 1rem;
 }
 .form-check {
@@ -117,7 +117,13 @@ input[type="checkbox"]:checked:after {
     cursor: pointer;
     object-fit: cover;
 }
-@media screen and (min-width: 950px) {
+@media (min-width: 768px) {
+    #gallery_collection {
+        grid-template-columns: repeat(3, 1fr);
+        gap: .625rem;
+    }
+}
+@media (min-width: 992px) {
     #gallery_collection {
         grid-template-columns: repeat(4, 1fr);
         gap: .625rem;

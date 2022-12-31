@@ -1,0 +1,33 @@
+<nav class="sidebar close">
+    <div class="nav_toggle">
+        <i class="fa-solid fa-arrow-right"></i>
+    </div>
+    <ul class="nav_links">
+        <li class="nav_link">
+            <div class="icon-link"><!-- icon -->
+                <a href="{{ path('app_picture') }}">
+                    <i class="fa-solid fa-image"></i>
+                    <span class="link_name">Images</span>
+                </a>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a href="{{ path('app_picture') }}">Mes Images</a></li>
+                <li><a href="{{ path('app_picture_new') }}">Ajouter</a></li>
+            </ul>
+        </li>
+        <li class="nav_link">
+            <div class="icon-link"><!-- icon -->
+                <a href="{{ path('app_gallery') }}">
+                    <i class="fa-solid fa-palette"></i>
+                    <span class="link_name">Galerie</span>
+                </a>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a href="{{ path('app_gallery') }}">Mes Galeries</a></li>
+                <li><a href="{{ path('app_gallery_new') }}">Ajouter</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>

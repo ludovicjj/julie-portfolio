@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base_admin.html.twig' %}
 {% form_theme form _self %}
 {% use "form/checkbox_radio_label.html.twig" %}
 
@@ -7,14 +7,18 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script src="{{ asset('js/gallery/gallery_add.js') }}" defer></script>
 {% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/gallery/gallery_add.css') }}">
 {% endblock %}
+
 {% block body %}
-    <div class="container">
+    {{ parent() }}
+    <main class="container">
         <header class="gallery-title">
             <h1>Ajouter une galerie</h1>
             <div>
@@ -62,5 +66,5 @@
 
             {{ form_end(form) }}
         </section>
-    </div>
+    </main>
 {% endblock %}
