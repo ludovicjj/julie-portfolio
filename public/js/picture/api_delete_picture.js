@@ -16,7 +16,7 @@ deleteLinks.forEach(link => {
             }
             countItems.textContent = (parseInt(countItems.textContent) - 1).toString();
             picture.remove();
-            new Paginate("#gallery_collection", 8)
+            new Paginate("#gallery_collection", 8, true)
         }).catch(() => {
             picture.classList.remove('load');
         })

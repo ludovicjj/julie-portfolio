@@ -3,14 +3,14 @@ class Paginate
     /**
      * @param {string} wrapper
      * @param {number} itemPerPage  Default 4
+     * @param {boolean} useStorage  Default false
      * @param {number} maxPages     Default 10
      */
-    constructor(wrapper, itemPerPage = 4, maxPages = 10) {
+    constructor(wrapper, itemPerPage = 4, useStorage = false, maxPages = 10) {
         this.wrapper = document.querySelector(wrapper);
-
+        this.useStorage = useStorage;
         // Get current Page from session Storage else get default value
-        this.currentPage = parseInt(sessionStorage.getItem("currentPage")) || 1;
-
+        this.currentPage = (this.useStorage) ? parseInt(sessionStorage.getItem("currentPage")) || 1 : 1;
         this.itemPerPage = itemPerPage;
         this.items = Array.from(this.wrapper.children)
         this.totalItems = this.items.length;
@@ -21,6 +21,9 @@ class Paginate
 
         // calculate total pages
         this.totalPages = this.PageNumber();
+
+        //ensure current page isn't out of range
+        this.ensureCurrentPage();
         this.calculStartAndEndPage();
 
         this.initMath()
@@ -38,6 +41,12 @@ class Paginate
         if (this.totalPages <= this.maxPages) {
             this.startPage = 1;
             this.endPage = this.totalPages;
+        }
+    }
+
+    ensureCurrentPage() {
+        if (this.currentPage < 1 || this.currentPage > this.totalPages ) {
+            this.currentPage = 1;
         }
     }
 
@@ -74,7 +83,9 @@ class Paginate
         currentLink.classList.add('active');
 
         // Init Session Storage
-        sessionStorage.setItem("currentPage", currentLink.dataset.index)
+        if (this.useStorage) {
+            sessionStorage.setItem("currentPage", currentLink.dataset.index)
+        }
         this.currentPage = parseInt(currentLink.dataset.index);
 
         this.initMath()
@@ -90,5 +101,3 @@ class Paginate
         })
     }
 }
-
-new Paginate("#gallery_collection", 8)
