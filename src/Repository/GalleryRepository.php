@@ -39,7 +39,7 @@ class GalleryRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOneByIdAndJoinToPicture(int $id)
+    public function findOneByIdInnerJoinPicture(int $id)
     {
         return $this->createQueryBuilder("gallery")
             ->andWhere("gallery.id = :id")
@@ -47,7 +47,31 @@ class GalleryRepository extends ServiceEntityRepository
             ->innerJoin("gallery.pictures", "pictures")
             ->addSelect("pictures")
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
+    }
+
+    public function deletePicture(int $galleryId, int $pictureId)
+    {
+        return $this->createQueryBuilder("gallery")
+            ->andWhere("gallery.id = :gallery_id")
+            ->setParameter('gallery_id', $galleryId)
+            ->innerJoin("gallery.pictures", "pictures")
+            ->addSelect("pictures")
+            ->andWhere("pictures.id = :picture_id")
+            ->setParameter('picture_id', $pictureId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findOneByIdLeftJoinPicture(int $id)
+    {
+        return $this->createQueryBuilder("gallery")
+            ->andWhere("gallery.id = :id")
+            ->setParameter('id', $id)
+            ->leftJoin("gallery.pictures", "pictures")
+            ->addSelect("pictures")
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 //    /**

@@ -66,7 +66,7 @@ class PictureController extends AbstractController
     }
 
     #[Route('/api/admin/pictures/{id}', name: "app_picture_delete", methods: ['DELETE'])]
-    public function deletePicture(int $id)
+    public function deletePicture(int $id): Response
     {
         $pictureRepository = $this->entityManager->getRepository(Picture::class);
         $picture = $pictureRepository->findOneBy(['id' => $id]);
@@ -76,19 +76,8 @@ class PictureController extends AbstractController
         }
         // remove file on disc
 
-//        $this->entityManager->remove($picture);
-//        $this->entityManager->flush();
+        $this->entityManager->remove($picture);
+        $this->entityManager->flush();
         return $this->json(null, Response::HTTP_NO_CONTENT);
-    }
-
-    #[Route('/api/admin/pictures', name: "api_picture", methods: ['GET'])]
-    public function getPictures(SerializerInterface $serializer)
-    {
-        $pictureRepository = $this->entityManager->getRepository(Picture::class);
-        $pictures = $pictureRepository->findAll();
-
-        $json = $serializer->serialize($pictures, 'json');
-
-        return new JsonResponse($json, 200, [], true);
     }
 }

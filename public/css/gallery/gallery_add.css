@@ -51,7 +51,41 @@
     display: flex;
     justify-content: center;
 }
-
+/** Collection Picture **/
+.gallery_collection-item.load img {
+    opacity: .5;
+}
+.gallery_collection-item > i {
+    position: absolute;
+    z-index: 1;
+    right: 16px;
+    top: 14px;
+    color: #0b5ed7;
+    font-size: 22px;
+    cursor: pointer;
+}
+.gallery_collection-item .spinner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.gallery_collection-item .spinner > i {
+    position: relative;
+    z-index: 10;
+    font-size: 3rem;
+    color: #0b5ed7;
+    opacity: 0;
+}
+.gallery_collection-item.load > span > i {
+    opacity: 1;
+    -webkit-animation: rotating 2s linear infinite;
+    -moz-animation: rotating 2s linear infinite;
+    -ms-animation: rotating 2s linear infinite;
+    -o-animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite;
+}
 /** Bibliothèque **/
 #gallery_collection {
     display: grid;
@@ -59,17 +93,19 @@
     grid-template-columns: repeat(1, 1fr);
     margin-bottom: 1rem;
 }
-.form-check {
+.form-check, .gallery_collection-item {
     width: 100%;
     height: 200px;
     background-color: #ffffff;
     box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
     border-radius: 8px;
     position: relative;
-    cursor: pointer;
     padding: 0;
     margin: 0;
     display: none;
+}
+.form-check {
+    cursor: pointer;
 }
 input[type="checkbox"] {
     position: absolute;
@@ -105,7 +141,7 @@ input[type="checkbox"]:checked:after {
     content: "\f058";
     color: #478bfb;
 }
-.form-check img {
+.form-check img, .gallery_collection-item img {
     width: 70%;
     height: 150px;
     position: absolute;
@@ -114,8 +150,10 @@ input[type="checkbox"]:checked:after {
     right: 0;
     top: 0;
     bottom: 0;
-    cursor: pointer;
     object-fit: cover;
+}
+.form-check img {
+    cursor: pointer;
 }
 @media (min-width: 768px) {
     #gallery_collection {
@@ -128,13 +166,29 @@ input[type="checkbox"]:checked:after {
         grid-template-columns: repeat(4, 1fr);
         gap: .625rem;
     }
-    .form-check {
+    .form-check, .gallery_collection-item {
         height: 300px;
     }
-    .form-check img {
+    .form-check img, .gallery_collection-item img {
         height: 200px;
     }
     input[type="checkbox"]:after {
         font-size: 22px;
+    }
+}
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
