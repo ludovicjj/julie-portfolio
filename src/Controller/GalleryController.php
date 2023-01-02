@@ -21,8 +21,10 @@ class GalleryController extends AbstractController
     #[Route('/admin/gallery', name: "app_gallery")]
     public function index(GalleryRepository $galleryRepository): Response
     {
+        $galleries = $galleryRepository->getGalleryLeftJoinPicture();
+
         return $this->render('admin/gallery/gallery_index.html.twig', [
-            "galleries" => $galleryRepository->findAll()
+            "galleries" => $galleries
         ]);
     }
 
@@ -55,7 +57,7 @@ class GalleryController extends AbstractController
 
             $entityManager->persist($gallery);
             $entityManager->flush();
-
+            $this->addFlash('success', 'La galerie a été créée avec succès');
             return $this->redirectToRoute("app_gallery");
         }
 
@@ -73,7 +75,7 @@ class GalleryController extends AbstractController
         Request $request
     ): Response
     {
-        $gallery = $galleryRepository->findOneByIdLeftJoinPicture($id);
+        $gallery = $galleryRepository->getGalleryLeftJoinPicture($id);
 
         if (!$gallery) {
             throw new NotFoundHttpException();
@@ -94,6 +96,7 @@ class GalleryController extends AbstractController
                 $gallery->addPicture($picture);
             }
             $entityManager->flush();
+            $this->addFlash('success', 'La galerie a été mise à jour');
             return $this->redirectToRoute('app_gallery');
         }
 
@@ -107,7 +110,7 @@ class GalleryController extends AbstractController
     #[Route('/admin/gallery/{id}', name: "app_gallery_show", methods: ['GET'])]
     public function show(GalleryRepository $galleryRepository, int $id): Response
     {
-        $gallery = $galleryRepository->findOneByIdInnerJoinPicture($id);
+        $gallery = $galleryRepository->getGalleryLeftJoinPicture($id);
 
         if (!$gallery) {
             throw new NotFoundHttpException();
@@ -115,6 +118,21 @@ class GalleryController extends AbstractController
         return $this->render('admin/gallery/gallery_show.html.twig', [
             "gallery" => $gallery
         ]);
+    }
+
+    #[Route('/api/admin/gallery/{id}', name: "app_gallery_delete", methods: ['DELETE'])]
+    public function delete(
+        int $id,
+        GalleryRepository $galleryRepository
+    ): Response
+    {
+        $gallery = $galleryRepository->findOneBy(['id' => $id]);
+        if (!$gallery) {
+            return new JsonResponse(null, 404);
+        }
+
+        $galleryRepository->remove($gallery, true);
+        return new JsonResponse(null, 204);
     }
 
     #[Route('/api/gallery/{gallery_id}/picture/{picture_id}', name: "api_gallery_picture_delete", methods: ['DELETE'])]
@@ -125,7 +143,7 @@ class GalleryController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $gallery = $galleryRepository->deletePicture($gallery_id, $picture_id);
+        $gallery = $galleryRepository->getGalleryInnerJoinPicture($gallery_id, $picture_id);
 
         if (!$gallery || empty($gallery->getPictures())) {
             return new JsonResponse(null, 404);

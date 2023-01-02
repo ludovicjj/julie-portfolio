@@ -9,8 +9,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/component/pagination.js') }}" defer></script>
+    <script src="{{ asset('js/component/flash_message.js') }}" defer></script>
     <script src="{{ asset('js/component/collection_holder.js') }}" defer></script>
-    <script src="{{ asset('js/picture/api_delete_picture.js') }}" defer></script>
     <script src="{{ asset('js/gallery/gallery_update.js') }}" defer></script>
 {% endblock %}
 
@@ -28,6 +28,9 @@
                 <a href="{{ path('app_gallery') }}" class="btn btn-primary btn-sm">Retour à mes Galeries</a>
             </div>
         </header>
+
+        <div class="alert alert-success alert-message"></div>
+
         <section class="gallery-action">
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             {{ form_row(form.title) }}
@@ -60,7 +63,7 @@
                 <span class="d-block my-3">
                     Images disponibles dans la galerie (<b id="count_gallery_collection">{{ pictures|length }}</b>)
                 </span>
-                <div id="gallery_collection">
+                <div id="gallery_collection" data-session="gallery_update">
                     {% for picture in pictures %}
                         <div class="gallery_collection-item">
                             <i class="fa-solid fa-circle-xmark"></i>

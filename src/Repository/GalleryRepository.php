@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Gallery;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,39 +40,71 @@ class GalleryRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOneByIdInnerJoinPicture(int $id)
+    public function getGalleryInnerJoinPicture(int $id = null, int $pictureId = null)
     {
-        return $this->createQueryBuilder("gallery")
-            ->andWhere("gallery.id = :id")
-            ->setParameter('id', $id)
-            ->innerJoin("gallery.pictures", "pictures")
-            ->addSelect("pictures")
-            ->getQuery()
-            ->getOneOrNullResult();
+        $queryBuilder = $this->createQueryBuilder('gallery');
+        if ($id) {
+            $queryBuilder
+                ->andWhere("gallery.id = :id")
+                ->setParameter('id', $id);
+        }
+        $queryBuilder = $this->innerJoinPicture($queryBuilder);
+
+        if ($pictureId) {
+            $queryBuilder
+                ->andWhere("pictures.id = :picture_id")
+                ->setParameter('picture_id', $pictureId);
+        }
+        $query = $queryBuilder->getQuery();
+
+        if ($id) {
+            return $query->getOneOrNullResult();
+        }
+
+        return $query->getResult();
     }
 
-    public function deletePicture(int $galleryId, int $pictureId)
+    public function getGalleryLeftJoinPicture(int $id = null)
     {
-        return $this->createQueryBuilder("gallery")
-            ->andWhere("gallery.id = :gallery_id")
-            ->setParameter('gallery_id', $galleryId)
-            ->innerJoin("gallery.pictures", "pictures")
-            ->addSelect("pictures")
-            ->andWhere("pictures.id = :picture_id")
-            ->setParameter('picture_id', $pictureId)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $queryBuilder = $this->createQueryBuilder('gallery');
+        if ($id) {
+            $queryBuilder
+                ->andWhere("gallery.id = :id")
+                ->setParameter('id', $id);
+        }
+        $queryBuilder = $this->leftJoinPicture($queryBuilder);
+        $query = $queryBuilder->getQuery();
+
+        if ($id) {
+            return $query->getOneOrNullResult();
+        }
+
+        return $query->getResult();
     }
 
-    public function findOneByIdLeftJoinPicture(int $id)
+    private function innerJoinPicture(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $this->createQueryBuilder("gallery")
-            ->andWhere("gallery.id = :id")
-            ->setParameter('id', $id)
+        $queryBuilder = $queryBuilder ?? $this->getGalleryQueryBuilder();
+        $queryBuilder
+            ->innerJoin("gallery.pictures", "pictures")
+            ->addSelect("pictures");
+
+        return $queryBuilder;
+    }
+
+    private function leftJoinPicture(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        $queryBuilder = $queryBuilder ?? $this->getGalleryQueryBuilder();
+        $queryBuilder
             ->leftJoin("gallery.pictures", "pictures")
-            ->addSelect("pictures")
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->addSelect("pictures");
+
+        return $queryBuilder;
+    }
+
+    private function getGalleryQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('gallery');
     }
 
 //    /**

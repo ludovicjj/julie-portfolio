@@ -1,23 +1,77 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}
+    Galerie
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset("css/gallery/gallery_index.css") }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/component/pagination.js') }}" defer></script>
+    <script src="{{ asset('js/component/flash_message.js') }}" defer></script>
+    <script src="{{ asset('js/gallery/gallery_index.js') }}" defer></script>
+{% endblock %}
+
 {% block body %}
-    <div class="container">
-        <h1>Vos Galleries</h1>
-        <a href="{{ path("app_gallery_new") }}" class="btn btn-primary btn-sm mb-3">Ajouter une gallerie</a>
-        <div class="row">
-            {% for gallery in galleries %}
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ gallery.title }}</h5>
-                            <p class="card-text">{{ gallery.description }}</p>
-                        </div>
-                        <div class="card-body">
-                            <a href="{{ path("app_gallery_show", {id: gallery.id}) }}" class="card-link">Voir</a>
-                            <a href="{{ path("app_gallery_update", {id: gallery.id}) }}" class="card-link">modifier</a>
+    {{ parent() }}
+    <main class="container">
+
+        <header class="gallery-title">
+            <h1>Vos Galleries</h1>
+            <div>
+                <a href="{{ path("app_gallery_new") }}" class="btn btn-primary btn-sm">Ajouter une galerie</a>
+            </div>
+        </header>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success mb-0">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="alert alert-success alert-message"></div>
+
+        <section class="gallery_section">
+            <div id="gallery_paginated" data-session="gallery_index">
+                {% for gallery in galleries %}
+                    <div class="gallery_item">
+                        <div class="card">
+                            <div class="card-img">
+                                {% if gallery.pictures|length > 0 %}
+                                    <img class="card-img-top" src="{{ asset('uploads/pictures/' ~ gallery.pictures[0].pictureFileName) }}" alt="">
+                                {% endif %}
+
+                                <div class="gallery-action">
+                                    <a href="{{ path("app_gallery_show", {id: gallery.id}) }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="{{ path("app_gallery_update", {id: gallery.id}) }}">
+                                        <i class="fa-solid fa-pencil"></i>
+                                    </a>
+                                    <a href="#" class="gallery-delete" data-url="{{ path('app_gallery_delete', {id: gallery.id}) }}">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ gallery.title|capitalize }}</h5>
+                                <p>
+                                    Il y a 5 jours -
+                                    <span class="gallery_count">{{ gallery.pictures|length }} image{{ gallery.pictures|length > 1 ? 's' : '' }}</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+                {% endfor %}
+            </div>
+            <nav aria-label="Collection navigation">
+                <ul class="pagination">
+                </ul>
+            </nav>
+        </section>
+    </main>
 {% endblock %}

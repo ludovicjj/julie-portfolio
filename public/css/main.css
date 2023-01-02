@@ -13,3 +13,7 @@
 .gallery-title a {
     display: inline-block;
 }
+.container {
+    display: flex;
+    flex-direction: column;
+}

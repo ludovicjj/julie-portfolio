@@ -1,20 +1,26 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}
     {{ gallery.title }}
 {% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset("css/gallery/gallery_new.css") }}">
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
-    <div class="container">
+    {{ parent() }}
+    <main class="container">
         <header class="gallery-title">
             <h1>{{ gallery.title }}</h1>
             <div>
                 <a href="{{ path('app_gallery') }}" class="btn btn-primary btn-sm">Retour à mes Galleries</a>
-                <a href="{{ path('app_gallery') }}" class="btn btn-primary btn-sm">Modifier</a>
+                <a href="{{ path('app_gallery_update', {id: gallery.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
             </div>
         </header>
         <section class="gallery-description">
@@ -28,5 +34,5 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
+    </main>
 {% endblock %}

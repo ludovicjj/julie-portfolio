@@ -8,9 +8,13 @@ class Paginate
      */
     constructor(wrapper, itemPerPage = 4, useStorage = false, maxPages = 10) {
         this.wrapper = document.querySelector(wrapper);
+
+        // Storage
+        this.storageName = this.wrapper.dataset.session
         this.useStorage = useStorage;
+
         // Get current Page from session Storage else get default value
-        this.currentPage = (this.useStorage) ? parseInt(sessionStorage.getItem("currentPage")) || 1 : 1;
+        this.currentPage = (this.useStorage) ? parseInt(sessionStorage.getItem(this.storageName)) || 1 : 1;
         this.itemPerPage = itemPerPage;
         this.items = Array.from(this.wrapper.children)
         this.totalItems = this.items.length;
@@ -84,7 +88,7 @@ class Paginate
 
         // Init Session Storage
         if (this.useStorage) {
-            sessionStorage.setItem("currentPage", currentLink.dataset.index)
+            sessionStorage.setItem(this.storageName, currentLink.dataset.index)
         }
         this.currentPage = parseInt(currentLink.dataset.index);
 
