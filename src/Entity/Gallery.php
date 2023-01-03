@@ -7,10 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: GalleryRepository::class)]
 class Gallery
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,12 +24,19 @@ class Gallery
     #[Assert\NotBlank(message: "Vous devez donner un titre à votre galerie.")]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Vous devez donner une description à votre galerie.")]
-    private ?string $description = null;
-
-    #[ORM\ManyToMany(targetEntity: Picture::class, cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Picture::class, inversedBy: 'galleries', cascade: ["persist"])]
     private Collection $pictures;
+
+    #[ORM\Column(length: 255, unique: true)]
+    #[Slug(fields: ['title'])]
+    private ?string $slug = null;
+
+    #[ORM\Column]
+    private bool $published = false;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Vous devez choisir une image à la une pour votre galerie.")]
+    private ?string $cover = null;
 
     public function __construct()
     {
@@ -45,18 +56,6 @@ class Gallery
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -83,5 +82,41 @@ class Gallery
         $this->pictures->removeElement($picture);
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): self
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    public function setCover(string $cover): self
+    {
+        $this->cover = $cover;
+
+        return $this;
+    }
+
+    public function getCover(): ?string
+    {
+        return $this->cover;
     }
 }

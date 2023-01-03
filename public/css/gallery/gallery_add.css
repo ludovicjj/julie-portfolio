@@ -98,7 +98,7 @@
     grid-template-columns: repeat(1, 1fr);
     margin-bottom: 1rem;
 }
-.form-check, .gallery_collection-item {
+#gallery_collection .form-check, .gallery_collection-item {
     width: 100%;
     height: 200px;
     background-color: #ffffff;
@@ -112,7 +112,7 @@
 .form-check {
     cursor: pointer;
 }
-input[type="checkbox"] {
+#gallery_collection input[type="checkbox"] {
     position: absolute;
     top: 0;
     right: 0;
@@ -123,15 +123,15 @@ input[type="checkbox"] {
     cursor: pointer;
     box-shadow: none;
 }
-input[type="checkbox"]:checked, input[type="checkbox"]:focus {
+#gallery_collection input[type="checkbox"]:checked, #gallery_collection input[type="checkbox"]:focus {
     box-shadow: none;
     border: none;
     background-color: #FFFFFF;
 }
-input[type="checkbox"]:active {
+#gallery_collection input[type="checkbox"]:active {
     filter: none;
 }
-input[type="checkbox"]:after {
+#gallery_collection input[type="checkbox"]:after {
     position: absolute;
     font-family: "Font Awesome 5 Free", sans-serif;
     font-weight: 400;
@@ -141,12 +141,12 @@ input[type="checkbox"]:after {
     right: 7px;
     top: -2px;
 }
-input[type="checkbox"]:checked:after {
+#gallery_collection input[type="checkbox"]:checked:after {
     font-weight: 900;
     content: "\f058";
     color: #478bfb;
 }
-.form-check img, .gallery_collection-item img {
+#gallery_collection .form-check img, .gallery_collection-item img {
     width: 89%;
     height: 150px;
     position: absolute;
@@ -157,7 +157,7 @@ input[type="checkbox"]:checked:after {
     bottom: 0;
     object-fit: cover;
 }
-.form-check img {
+#gallery_collection .form-check img {
     cursor: pointer;
 }
 /** Alert **/
@@ -203,20 +203,20 @@ input[type="checkbox"]:checked:after {
     .form-check img, .gallery_collection-item img {
         width: 70%;
     }
-    input[type="checkbox"]:after {
+    #gallery_collection input[type="checkbox"]:after {
         right: 12px;
         top: 5px;
     }
     #gallery_collection, .image_wrapper {
         grid-template-columns: repeat(3, 1fr);
     }
-    .form-check, .gallery_collection-item {
+    #gallery_collection .form-check, .gallery_collection-item {
         height: 300px;
     }
-    .form-check img, .gallery_collection-item img {
+    #gallery_collection .form-check img, .gallery_collection-item img {
         height: 200px;
     }
-    input[type="checkbox"]:after {
+    #gallery_collection input[type="checkbox"]:after {
         font-size: 22px;
     }
 }

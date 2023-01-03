@@ -6,6 +6,7 @@ use App\Entity\Gallery;
 use App\Entity\Picture;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,10 +26,31 @@ class GalleryType extends AbstractType
                 "help" => "Le titre de votre galerie",
                 'required' => true,
             ])
-            ->add("description", TextareaType::class, [
-                'label' => 'Description *',
+            ->add("mainImage", FileType::class, [
+                'label' => 'Image à la une *',
                 'required' => true,
-                'help' => 'Une courte description de votre galerie'
+                'help' => 'Image à la une de votre galerie',
+                "mapped" => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif'
+                        ],
+                        'mimeTypesMessage' => 'Seuls les fichiers JPEG, JPG, PNG et GIF sont autorisés.',
+                    ])
+                ],
+            ])
+            ->add('published', ChoiceType::class, [
+                "choices" => [
+                    "Yes" => true,
+                    "No" => false
+                ],
+                "label" => "Public",
+                "choice_label" => false,
+                "expanded" => true,
             ])
             ->add("images", CollectionType::class, [
                 "label" => false,
@@ -48,8 +70,9 @@ class GalleryType extends AbstractType
                             'mimeTypes' => [
                                 'image/jpeg',
                                 'image/png',
+                                'image/gif'
                             ],
-                            'mimeTypesMessage' => 'Seuls les fichiers JPEG, JPG et PNG sont autorisés.',
+                            'mimeTypesMessage' => 'Seuls les fichiers JPEG, JPG, PNG et GIF sont autorisés.',
                         ])
                     ],
                     'error_bubbling' => true
