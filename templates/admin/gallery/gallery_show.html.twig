@@ -6,11 +6,13 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset("css/gallery/gallery_new.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/gallery/gallery_show.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/component/lightbox/lightbox.css") }}">
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('js/component/lightbox.js') }}" type="module" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -26,11 +28,14 @@
         <section class="gallery-description">
             <h3>Description</h3>
             <p>{{ gallery.description }}</p>
+            <span>Il y a 5 jours</span>
         </section>
-        <div class="wrapper_picture">
+        <div id="wrapper_gallery_grid">
             {% for picture in gallery.pictures %}
                 <div class="picture_item">
-                    <img src="{{ asset('uploads/pictures/' ~ picture.pictureFileName) }}" alt="{{ picture.name }}" class="picture_img">
+                    <a href="{{ asset('uploads/pictures/' ~ picture.pictureFileName) }}">
+                        <img src="{{ asset('uploads/pictures/' ~ picture.pictureFileName) }}" alt="{{ picture.name }}" class="picture_img">
+                    </a>
                 </div>
             {% endfor %}
         </div>

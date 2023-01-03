@@ -8,7 +8,7 @@
 /** Images **/
 .image_wrapper {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: .625rem;
 }
 .image_item {
@@ -17,13 +17,13 @@
 .image_item i {
     position: absolute;
     z-index: 1;
-    right: 16px;
-    top: 14px;
+    right: 10px;
+    top: 6px;
     color: #0b5ed7;
-    font-size: 22px;
+    font-size: 18px;
 }
 .image_row {
-    height: 300px;
+    height: 250px;
     background-color: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
@@ -38,8 +38,8 @@
     align-items: center;
 }
 .default_img {
-    width: 70%;
-    height: 200px;
+    width: 87%;
+    height: 190px;
     object-fit: cover;
 }
 .image_wrapper input[type="file"] {
@@ -51,6 +51,7 @@
     display: flex;
     justify-content: center;
 }
+
 /** Collection Picture **/
 .gallery_collection-item.load img {
     opacity: .5;
@@ -86,10 +87,10 @@
     opacity: 1;
     -webkit-animation: rotating 2s linear infinite;
     -moz-animation: rotating 2s linear infinite;
-    -ms-animation: rotating 2s linear infinite;
     -o-animation: rotating 2s linear infinite;
     animation: rotating 2s linear infinite;
 }
+
 /** Bibliothèque **/
 #gallery_collection {
     display: grid;
@@ -137,8 +138,8 @@ input[type="checkbox"]:after {
     content: "\f111";
     font-size: 18px;
     color: #478bfb;
-    right: 16px;
-    top: 5px;
+    right: 7px;
+    top: -2px;
 }
 input[type="checkbox"]:checked:after {
     font-weight: 900;
@@ -146,7 +147,7 @@ input[type="checkbox"]:checked:after {
     color: #478bfb;
 }
 .form-check img, .gallery_collection-item img {
-    width: 70%;
+    width: 89%;
     height: 150px;
     position: absolute;
     margin: auto;
@@ -179,15 +180,35 @@ input[type="checkbox"]:checked:after {
     margin-bottom: 1rem;
 }
 @media (min-width: 768px) {
-    #gallery_collection {
-        grid-template-columns: repeat(3, 1fr);
-        gap: .625rem;
+    .form-check img, .gallery_collection-item img {
+        width: 80%;
+    }
+    #gallery_collection, .image_wrapper {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .image_item i {
+        right: 16px;
+        top: 14px;
+        font-size: 22px;
+    }
+    .default_img {
+        width: 70%;
+        height: 200px;
+    }
+    .image_row {
+        height: 300px;
     }
 }
 @media (min-width: 992px) {
-    #gallery_collection {
-        grid-template-columns: repeat(4, 1fr);
-        gap: .625rem;
+    .form-check img, .gallery_collection-item img {
+        width: 70%;
+    }
+    input[type="checkbox"]:after {
+        right: 12px;
+        top: 5px;
+    }
+    #gallery_collection, .image_wrapper {
+        grid-template-columns: repeat(3, 1fr);
     }
     .form-check, .gallery_collection-item {
         height: 300px;
@@ -199,19 +220,18 @@ input[type="checkbox"]:checked:after {
         font-size: 22px;
     }
 }
+@media (min-width: 1200px) {
+    #gallery_collection, .image_wrapper {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
 @keyframes rotating {
     from {
         -ms-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
         transform: rotate(0deg);
     }
     to {
         -ms-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
         transform: rotate(360deg);
     }
 }

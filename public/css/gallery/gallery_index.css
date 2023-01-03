@@ -29,8 +29,12 @@
 }
 
 /** Card Image **/
-#gallery_paginated > * {
-    display: none;
+.card {
+    position: relative;
+}
+.invisible-link {
+    position: absolute;
+    inset: 0;
 }
 .gallery_item .card .card-img {
     height: 200px;
@@ -54,6 +58,9 @@
 }
 .card-body h5.card-title {
     font-size: 16px;
+}
+.card-body h5.card-title a {
+    text-decoration: none;
 }
 .card-body p {
     font-size: 12px;
@@ -88,6 +95,7 @@
     top: 10px;
     right: 10px;
     gap: 8px;
+    z-index: 2;
 }
 .gallery-action > a {
     background-color: #FFFFFF;
@@ -101,7 +109,6 @@
     justify-content: center;
     align-items: center;
     text-decoration: none;
-
 }
 .gallery-action > a.disabled {
     cursor: auto;
@@ -119,6 +126,9 @@
 }
 
 /** Pagination **/
+#gallery_paginated > * {
+    display: none;
+}
 .pagination {
     display: flex;
     justify-content: center;
