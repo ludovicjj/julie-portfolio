@@ -2,10 +2,12 @@
 
 namespace App\Type;
 
+use App\DTO\GalleryDto;
 use App\Entity\Gallery;
 use App\Entity\Picture;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -13,8 +15,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\All;
 
 class GalleryType extends AbstractType
 {
@@ -25,34 +32,25 @@ class GalleryType extends AbstractType
                 'label' => 'titre de la galerie *',
                 "help" => "Le titre de votre galerie",
                 'required' => true,
+                "row_attr" => ['class' => 'item_title']
             ])
-            ->add("mainImage", FileType::class, [
-                'label' => 'Image à la une *',
-                'required' => true,
-                'help' => 'Image à la une de votre galerie',
+            ->add("cover", FileType::class, [
+                'help' => 'Une image qui représentera votre galerie',
                 "mapped" => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                            'image/gif'
-                        ],
-                        'mimeTypesMessage' => 'Seuls les fichiers JPEG, JPG, PNG et GIF sont autorisés.',
-                    ])
+                "label" => "__default-img",
+                'label_html' => true,
+                "label_attr" => [
+                    "class" => "image_label"
                 ],
+                "row_attr" => ['class' => 'item_cover']
             ])
-            ->add('published', ChoiceType::class, [
-                "choices" => [
-                    "Yes" => true,
-                    "No" => false
-                ],
+            ->add('published', CheckboxType::class, [
                 "label" => "Public",
-                "choice_label" => false,
-                "expanded" => true,
+                'required' => false,
+                "label_attr" => ['class' => 'test'],
+                "row_attr" => ['class' => 'item_published']
             ])
-            ->add("images", CollectionType::class, [
+            ->add("uploads", CollectionType::class, [
                 "label" => false,
                 "mapped" => false,
                 "entry_type" => FileType::class,
@@ -64,23 +62,12 @@ class GalleryType extends AbstractType
                     "label_attr" => [
                         "class" => "image_label"
                     ],
-                    'constraints' => [
-                        new File([
-                            'maxSize' => '1024k',
-                            'mimeTypes' => [
-                                'image/jpeg',
-                                'image/png',
-                                'image/gif'
-                            ],
-                            'mimeTypesMessage' => 'Seuls les fichiers JPEG, JPG, PNG et GIF sont autorisés.',
-                        ])
-                    ],
                     'error_bubbling' => true
                 ],
                 "allow_add" => true,
                 "allow_delete" => true
             ])
-            ->add("collection", EntityType::class, [
+            ->add("images", EntityType::class, [
                 "class" => Picture::class,
                 "label" => "Bibliothèque",
                 "help" => "Vous pouvez choisir une ou plusieurs images depuis votre bibliothèque",
@@ -104,7 +91,16 @@ class GalleryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Gallery::class
+            'data_class' => GalleryDto::class,
+            'empty_data' => function (FormInterface $form) {
+                return new GalleryDto(
+                    $form->get('title')->getData(),
+                    $form->get('cover')->getData(),
+                    $form->get('published')->getData(),
+                    $form->get('uploads')->getData(),
+                    $form->get('images')->getData()
+                );
+            }
         ]);
     }
 }

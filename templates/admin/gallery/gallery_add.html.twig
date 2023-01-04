@@ -28,17 +28,28 @@
             </div>
         </header>
         <section class="gallery-action">
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_row(form.title) }}
-            {{ form_row(form.mainImage) }}
-            {{ form_row(form.published) }}
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'action': path('api_gallery_add')}}) }}
+
+            <div class="form-grid">
+                {{ form_row(form.title) }}
+
+                <div class="item_cover">
+                    <span class="d-block mb-2">Images à la une *</span>
+                    {{ form_help(form.cover) }}
+                    {{ form_label(form.cover) }}
+                    {{ form_widget(form.cover) }}
+                    {{ form_errors(form.cover) }}
+                </div>
+
+                {{ form_row(form.published) }}
+            </div>
 
             <span class="d-block mb-2">Images</span>
             <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="image_wrapper">Ajouter une image</button>
             <div class="images_feedback">
-                {% if not form.images.vars.valid %}
+                {% if not form.uploads.vars.valid %}
                     {% set errors_message = []  %}
-                    {%for error in form.images.vars.errors%}
+                    {%for error in form.uploads.vars.errors%}
                         {% set errors_message = errors_message|merge([error.message]) %}
                     {%endfor%}
                     {% for message in errors_message|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
@@ -48,18 +59,18 @@
             </div>
 
             <div class="image_wrapper"
-                data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}"
-                data-prototype="{{ form_row(form.images.vars.prototype)|e('html_attr') }}"
+                data-index="{{ form.uploads|length > 0 ? form.uploads|last.vars.name + 1 : 0 }}"
+                data-prototype="{{ form_row(form.uploads.vars.prototype)|e('html_attr') }}"
             >
-                {% for pictureField in form.images %}
+                {% for pictureField in form.uploads %}
                     {{ form_row(pictureField) }}
                 {% endfor %}
             </div>
 
-            {{ form_label(form.collection) }}
-            {{ form_help(form.collection) }}
-            {{ form_widget(form.collection) }}
-            {{ form_errors(form.collection) }}
+            {{ form_label(form.images) }}
+            {{ form_help(form.images) }}
+            {{ form_widget(form.images) }}
+            {{ form_errors(form.images) }}
 
             <nav aria-label="Collection navigation">
                 <ul class="pagination">

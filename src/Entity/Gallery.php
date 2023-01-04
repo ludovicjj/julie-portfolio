@@ -35,7 +35,7 @@ class Gallery
     private bool $published = false;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Vous devez choisir une image à la une pour votre galerie.")]
+    #[Assert\NotBlank(message: "Vous devez choisir une image à la une pour votre galerie-- test.")]
     private ?string $cover = null;
 
     public function __construct()

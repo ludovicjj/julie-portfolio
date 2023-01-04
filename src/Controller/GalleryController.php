@@ -35,6 +35,7 @@ class GalleryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            dd($form->getData());
             $files = $form->get('images')->getData();
             $collections = $form->get('collection')->getData();
 

@@ -19,8 +19,12 @@
         {{ widget|raw }}
         <label{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
             {%- if label is not same as(false) -%}
-                <img src="{{ asset('uploads/pictures/' ~ block('form_label_content')) }}" alt="" class="picture_img">
+                {{- block('form_label_content') -}}
             {%- endif -%}
+{#            {%- if label is not same as(false) -%}#}
+{#                {{ dump(label_attr) }}#}
+{#                <img src="{{ asset('uploads/pictures/' ~ block('form_label_content')) }}" alt="" class="picture_img">#}
+{#            {%- endif -%}#}
         </label>
     {%- endif -%}
 {%- endblock checkbox_radio_label %}
@@ -46,6 +50,9 @@
         {%- if label_html is same as(false) -%}
             {{- label|trans(label_translation_parameters, translation_domain) -}}
         {%- else -%}
+{#            {%- if '__default-img' in label_attr.class -%}#}
+{#                {{ dump('oui') }}#}
+{#            {% endif %}#}
             {%- if label is same as('__default-img') -%}
                 <img src="{{ asset('images/default-image.jpg') }}" alt="default_img" class="default_img">
             {%- else -%}
