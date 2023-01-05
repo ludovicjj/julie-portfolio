@@ -21,7 +21,6 @@ class Gallery
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Vous devez donner un titre à votre galerie.")]
     private ?string $title = null;
 
     #[ORM\ManyToMany(targetEntity: Picture::class, inversedBy: 'galleries', cascade: ["persist"])]
@@ -32,15 +31,18 @@ class Gallery
     private ?string $slug = null;
 
     #[ORM\Column]
-    private bool $published = false;
+    private bool $published;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Vous devez choisir une image à la une pour votre galerie-- test.")]
     private ?string $cover = null;
+
+    #[ORM\ManyToOne(inversedBy: 'galleries')]
+    private ?Tag $tag = null;
 
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
+        $this->published = false;
     }
 
     public function getId(): ?int
@@ -118,5 +120,17 @@ class Gallery
     public function getCover(): ?string
     {
         return $this->cover;
+    }
+
+    public function getTag(): ?Tag
+    {
+        return $this->tag;
+    }
+
+    public function setTag(?Tag $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
     }
 }

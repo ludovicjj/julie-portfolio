@@ -2,66 +2,36 @@
 
 namespace App\Controller\API;
 
-use App\DTO\GalleryDto;
-use App\Repository\PictureRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Builder\GalleryBuilder;
+use App\Builder\GalleryDTOBuilder;
+use App\Exception\ValidatorException;
+use App\Handler\Validation\ErrorsValidationHandler;
+use App\Handler\Request\CreateGalleryRequestHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GalleryController extends AbstractController
 {
-    #[Route('/api/gallery', name: 'api_gallery_add', methods: ['POST'])]
-    public function add(Request $request, PictureRepository $pictureRepository, ValidatorInterface $validator)
+    /** @throws ValidatorException */
+    #[Route('/api/gallery', name: 'api_gallery_create', methods: ['POST'])]
+    public function create(
+        Request $request,
+        ValidatorInterface $validator,
+        GalleryDTOBuilder $galleryDTOBuilder,
+        GalleryBuilder $galleryBuilder
+    ): Response
     {
-        $formData = $request->request->all();
-        $dto = new GalleryDto();
+        $data = CreateGalleryRequestHandler::handle($request);
+        $galleryDTO = $galleryDTOBuilder->buildFromStdClass($data);
+        $constraintList = $validator->validate($galleryDTO);
+        ErrorsValidationHandler::handleErrors($constraintList);
 
-        if (isset($formData['gallery'])) {
-            $galleryData = $formData['gallery'];
+        $galleryBuilder->build($galleryDTO);
 
-            $title = $galleryData['title'] ?? "";
-            $published = $galleryData['published'] ?? false;
-            $images = $galleryData['images'] ?? [];
-
-            $pictures = new ArrayCollection();
-            foreach ($images as $imageId) {
-                $picture = $pictureRepository->findOneBy(['id' => $imageId]);
-                if ($picture) {
-                    $pictures->add($picture);
-                }
-            }
-
-            // hydrate DTO (title, published & images)
-            $dto->title = $title;
-            $dto->published = $published === '1';
-            $dto->images = $pictures;
-        }
-
-        // Les fichiers images
-        $filesData = $request->files->all();
-
-        if (isset($filesData['gallery'])) {
-            $galleryFiles = $filesData['gallery'];
-
-            $cover = $galleryFiles['cover'] ?? null;
-            $uploads = $galleryFiles['uploads'] ?? [];
-
-            // hydrate DTO (cover & uploads)
-            $dto->cover = $cover;
-            $dto->uploads = $uploads;
-        }
-
-        $constraintList = $validator->validate($dto);
-        if (count($constraintList) > 0) {
-            $errors = [];
-            foreach ($constraintList as $constraint) {
-                $errors[$constraint->getPropertyPath()][] = $constraint->getMessage();
-            }
-            return new JsonResponse($errors, 422);
-        }
-        return new JsonResponse('Tout est ok', 201);
+        return new JsonResponse(null, 201);
     }
 }

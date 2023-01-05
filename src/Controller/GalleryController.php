@@ -29,38 +29,11 @@ class GalleryController extends AbstractController
     }
 
     #[Route('/admin/gallery/new', name: "app_gallery_new")]
-    public function create(Request $request, UploaderHelper $uploaderHelper, EntityManagerInterface $entityManager): Response
+    public function create(): Response
     {
-        $form = $this->createForm(GalleryType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData());
-            $files = $form->get('images')->getData();
-            $collections = $form->get('collection')->getData();
-
-            /** @var Gallery $gallery */
-            $gallery = $form->getData();
-
-
-            foreach ($files as $file) {
-                $picture = new Picture();
-                $picture->setName(uniqid());
-                $fileName = $uploaderHelper->upload($file);
-                $picture->setPictureFileName($fileName);
-
-                $gallery->addPicture($picture);
-            }
-
-            foreach ($collections as $collection) {
-                $gallery->addPicture($collection);
-            }
-
-            $entityManager->persist($gallery);
-            $entityManager->flush();
-            $this->addFlash('success', 'La galerie a été créée avec succès');
-            return $this->redirectToRoute("app_gallery");
-        }
+        $form = $this->createForm(GalleryType::class, null, [
+            'action' => $this->generateUrl('api_gallery_create'),
+        ]);
 
         return $this->render('admin/gallery/gallery_add.html.twig', [
             'form' => $form

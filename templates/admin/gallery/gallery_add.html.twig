@@ -28,10 +28,11 @@
             </div>
         </header>
         <section class="gallery-action">
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'action': path('api_gallery_add')}}) }}
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
             <div class="form-grid">
                 {{ form_row(form.title) }}
+                {{ form_row(form.tag) }}
 
                 <div class="item_cover">
                     <span class="d-block mb-2">Images à la une *</span>
@@ -46,31 +47,19 @@
 
             <span class="d-block mb-2">Images</span>
             <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="image_wrapper">Ajouter une image</button>
-            <div class="images_feedback">
-                {% if not form.uploads.vars.valid %}
-                    {% set errors_message = []  %}
-                    {%for error in form.uploads.vars.errors%}
-                        {% set errors_message = errors_message|merge([error.message]) %}
-                    {%endfor%}
-                    {% for message in errors_message|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
-                        <div class="invalid-feedback d-block">{{message}}</div>
-                    {% endfor %}
-                {% endif %}
-            </div>
-
             <div class="image_wrapper"
                 data-index="{{ form.uploads|length > 0 ? form.uploads|last.vars.name + 1 : 0 }}"
                 data-prototype="{{ form_row(form.uploads.vars.prototype)|e('html_attr') }}"
             >
-                {% for pictureField in form.uploads %}
-                    {{ form_row(pictureField) }}
+                {% for uploadField in form.uploads %}
+                    {{ form_row(uploadField) }}
                 {% endfor %}
             </div>
 
-            {{ form_label(form.images) }}
-            {{ form_help(form.images) }}
-            {{ form_widget(form.images) }}
-            {{ form_errors(form.images) }}
+            {{ form_label(form.pictures) }}
+            {{ form_help(form.pictures) }}
+            {{ form_widget(form.pictures) }}
+            {{ form_errors(form.pictures) }}
 
             <nav aria-label="Collection navigation">
                 <ul class="pagination">
@@ -80,4 +69,8 @@
             {{ form_end(form) }}
         </section>
     </main>
+
+    <template id="template-default-image">
+        <img src="{{ asset('images/default-image.jpg') }}" alt="default_img" class="default_img">
+    </template>
 {% endblock %}

@@ -2,26 +2,18 @@
 
 namespace App\Type;
 
-use App\DTO\GalleryDto;
-use App\Entity\Gallery;
+use App\DTO\GalleryDTO;
 use App\Entity\Picture;
+use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\All;
 
 class GalleryType extends AbstractType
 {
@@ -36,7 +28,6 @@ class GalleryType extends AbstractType
             ])
             ->add("cover", FileType::class, [
                 'help' => 'Une image qui représentera votre galerie',
-                "mapped" => false,
                 "label" => "__default-img",
                 'label_html' => true,
                 "label_attr" => [
@@ -50,9 +41,20 @@ class GalleryType extends AbstractType
                 "label_attr" => ['class' => 'test'],
                 "row_attr" => ['class' => 'item_published']
             ])
+            ->add('tag', EntityType::class, [
+                "class" => Tag::class,
+                "label" => 'Tag',
+                'help' => 'Associez la galerie a un tag. Exemple: Mariage',
+                'placeholder' => 'Sélectionnez un tag',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                "choice_label" => function ($tag) {
+                    return $tag->getName();
+                },
+            ])
             ->add("uploads", CollectionType::class, [
                 "label" => false,
-                "mapped" => false,
                 "entry_type" => FileType::class,
                 'error_bubbling' => false,
                 "entry_options" => [
@@ -67,7 +69,7 @@ class GalleryType extends AbstractType
                 "allow_add" => true,
                 "allow_delete" => true
             ])
-            ->add("images", EntityType::class, [
+            ->add("pictures", EntityType::class, [
                 "class" => Picture::class,
                 "label" => "Bibliothèque",
                 "help" => "Vous pouvez choisir une ou plusieurs images depuis votre bibliothèque",
@@ -76,7 +78,6 @@ class GalleryType extends AbstractType
                 ],
                 "multiple" => true,
                 "expanded" => true,
-                "mapped" => false,
                 "required" => false,
                 "choice_label" => function ($picture) {
                     return $picture->getpictureFileName();
@@ -88,19 +89,15 @@ class GalleryType extends AbstractType
         ;
     }
 
+    public function getBlockPrefix(): string
+    {
+        return "";
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => GalleryDto::class,
-            'empty_data' => function (FormInterface $form) {
-                return new GalleryDto(
-                    $form->get('title')->getData(),
-                    $form->get('cover')->getData(),
-                    $form->get('published')->getData(),
-                    $form->get('uploads')->getData(),
-                    $form->get('images')->getData()
-                );
-            }
+            'data_class' => GalleryDTO::class
         ]);
     }
 }
