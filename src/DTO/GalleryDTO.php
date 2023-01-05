@@ -25,6 +25,7 @@ class GalleryDTO
     )]
     private ?UploadedFile $cover = null;
 
+    #[Assert\Choice([true, false], message: 'Le choix sélectionné est invalide.')]
     private bool $published;
 
     #[Assert\All([

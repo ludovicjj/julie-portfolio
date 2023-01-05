@@ -31,18 +31,35 @@
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
             <div class="form-grid">
-                {{ form_row(form.title) }}
-                {{ form_row(form.tag) }}
+                <div class="grid-item-left-first">
+                    <div class="mb-3">
+                        {{ form_label(form.title) }}
+                        {{ form_help(form.title) }}
+                        {{ form_widget(form.title) }}
+                        {{ form_errors(form.title) }}
+                    </div>
+                </div>
+                <div class="grid-item-left-last">
+                    <div class="mb-3">
+                        {{ form_label(form.tag) }}
+                        {{ form_help(form.tag) }}
+                        {{ form_widget(form.tag) }}
+                        {{ form_errors(form.tag) }}
+                    </div>
+                    <div class="mb-3">
+                        <span class="d-block mb-2">Visibilité</span>
+                        {{ form_row(form.published) }}
+                    </div>
+                </div>
 
-                <div class="item_cover">
+
+                <div class="grid-item-right">
                     <span class="d-block mb-2">Images à la une *</span>
                     {{ form_help(form.cover) }}
                     {{ form_label(form.cover) }}
                     {{ form_widget(form.cover) }}
                     {{ form_errors(form.cover) }}
                 </div>
-
-                {{ form_row(form.published) }}
             </div>
 
             <span class="d-block mb-2">Images</span>

@@ -21,10 +21,9 @@ class GalleryType extends AbstractType
     {
         $builder
             ->add("title", TextType::class, [
-                'label' => 'titre de la galerie *',
+                'label' => 'Titre *',
                 "help" => "Le titre de votre galerie",
-                'required' => true,
-                "row_attr" => ['class' => 'item_title']
+                'required' => true
             ])
             ->add("cover", FileType::class, [
                 'help' => 'Une image qui représentera votre galerie',
@@ -32,14 +31,11 @@ class GalleryType extends AbstractType
                 'label_html' => true,
                 "label_attr" => [
                     "class" => "image_label"
-                ],
-                "row_attr" => ['class' => 'item_cover']
+                ]
             ])
             ->add('published', CheckboxType::class, [
                 "label" => "Public",
-                'required' => false,
-                "label_attr" => ['class' => 'test'],
-                "row_attr" => ['class' => 'item_published']
+                'required' => false
             ])
             ->add('tag', EntityType::class, [
                 "class" => Tag::class,
@@ -56,15 +52,13 @@ class GalleryType extends AbstractType
             ->add("uploads", CollectionType::class, [
                 "label" => false,
                 "entry_type" => FileType::class,
-                'error_bubbling' => false,
                 "entry_options" => [
                     "row_attr" => ["class" => "image_row"],
                     "label" => "__default-img",
                     "label_html" => true,
                     "label_attr" => [
                         "class" => "image_label"
-                    ],
-                    'error_bubbling' => true
+                    ]
                 ],
                 "allow_add" => true,
                 "allow_delete" => true
