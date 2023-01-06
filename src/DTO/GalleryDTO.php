@@ -33,7 +33,7 @@ class GalleryDTO
             maxSize: '1024k',
             extensions: [
                 'jpg' => 'image/jpeg',
-                'png' => 'image/png',
+//                'png' => 'image/png',
                 'gif' => 'image/gif'
             ],
             extensionsMessage: 'Seuls les fichiers JPG, PNG et GIF sont autorisés.',

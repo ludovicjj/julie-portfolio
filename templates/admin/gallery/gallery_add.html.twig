@@ -9,7 +9,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/component/collection_holder.js') }}" defer></script>
-    <script src="{{ asset('js/component/pagination.js') }}" defer></script>
     <script src="{{ asset('js/gallery/gallery_add.js') }}" defer></script>
 {% endblock %}
 
@@ -46,27 +45,32 @@
                         {{ form_widget(form.tag) }}
                         {{ form_errors(form.tag) }}
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-0 published">
                         <span class="d-block mb-2">Visibilité</span>
-                        {{ form_row(form.published) }}
+                        {{ form_label(form.published) }}
+                        {{ form_help(form.published) }}
+                        {{ form_widget(form.published) }}
+                        {{ form_errors(form.published) }}
                     </div>
                 </div>
 
 
                 <div class="grid-item-right">
-                    <span class="d-block mb-2">Images à la une *</span>
-                    {{ form_help(form.cover) }}
-                    {{ form_label(form.cover) }}
-                    {{ form_widget(form.cover) }}
-                    {{ form_errors(form.cover) }}
+                    <div class="cover-wrapper target-preview">
+                        <span class="d-block mb-2">Images à la une *</span>
+                        {{ form_help(form.cover) }}
+                        {{ form_widget(form.cover) }}
+                        {{ form_label(form.cover) }}
+                        {{ form_errors(form.cover) }}
+                    </div>
                 </div>
             </div>
 
             <span class="d-block mb-2">Images</span>
-            <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="image_wrapper">Ajouter une image</button>
-            <div class="image_wrapper"
+            <button type="button" class="add_item_link btn btn-primary btn-sm" data-collection-holder-class="uploads_wrapper">Ajouter une image</button>
+            <div class="uploads_wrapper"
                 data-index="{{ form.uploads|length > 0 ? form.uploads|last.vars.name + 1 : 0 }}"
-                data-prototype="{{ form_row(form.uploads.vars.prototype)|e('html_attr') }}"
+                data-prototype="{{ (form_widget(form.uploads.vars.prototype)~form_label(form.uploads.vars.prototype))|e('html_attr') }}"
             >
                 {% for uploadField in form.uploads %}
                     {{ form_row(uploadField) }}
@@ -75,7 +79,11 @@
 
             {{ form_label(form.pictures) }}
             {{ form_help(form.pictures) }}
-            {{ form_widget(form.pictures) }}
+            {% if form.pictures|length > 0 %}
+                {{ form_widget(form.pictures) }}
+            {% else %}
+                <div class="alert alert-primary" role="alert">Il n'y a pour l'instant aucune image dans la bibliothèque</div>
+            {% endif %}
             {{ form_errors(form.pictures) }}
 
             <nav aria-label="Collection navigation">

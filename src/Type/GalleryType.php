@@ -34,13 +34,14 @@ class GalleryType extends AbstractType
                 ]
             ])
             ->add('published', CheckboxType::class, [
-                "label" => "Public",
-                'required' => false
+                "label" => 'public',
+                'required' => false,
+                'help' => 'Définissez si la galerie est privée ou publique',
             ])
             ->add('tag', EntityType::class, [
                 "class" => Tag::class,
                 "label" => 'Tag',
-                'help' => 'Associez la galerie a un tag. Exemple: Mariage',
+                'help' => 'Associez la galerie à un tag. Exemple: Mariage',
                 'placeholder' => 'Sélectionnez un tag',
                 'multiple' => false,
                 'expanded' => false,
@@ -53,7 +54,7 @@ class GalleryType extends AbstractType
                 "label" => false,
                 "entry_type" => FileType::class,
                 "entry_options" => [
-                    "row_attr" => ["class" => "image_row"],
+//                    "row_attr" => ["class" => "mb-0"],
                     "label" => "__default-img",
                     "label_html" => true,
                     "label_attr" => [
@@ -75,7 +76,10 @@ class GalleryType extends AbstractType
                 "required" => false,
                 "choice_label" => function ($picture) {
                     return $picture->getpictureFileName();
-                }
+                },
+                "label_attr" => [
+                    "class" => "picture-label"
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Sauvegarder'

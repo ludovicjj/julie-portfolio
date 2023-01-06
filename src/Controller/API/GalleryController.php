@@ -30,7 +30,7 @@ class GalleryController extends AbstractController
         $constraintList = $validator->validate($galleryDTO);
         ErrorsValidationHandler::handleErrors($constraintList);
 
-        $galleryBuilder->build($galleryDTO);
+        //$galleryBuilder->build($galleryDTO);
 
         return new JsonResponse(null, 201);
     }
