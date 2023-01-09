@@ -9,7 +9,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/component/collection_holder.js') }}" defer></script>
-    <script src="{{ asset('js/gallery/gallery_add.js') }}" defer></script>
+    <script src="{{ asset('js/component/tom_select.js') }}" defer></script>
+{#    <script src="{{ asset('js/gallery/gallery_add.js') }}" defer></script>#}
 {% endblock %}
 
 {% block stylesheets %}
@@ -77,19 +78,12 @@
                 {% endfor %}
             </div>
 
-            {{ form_label(form.pictures) }}
-            {{ form_help(form.pictures) }}
-            {% if form.pictures|length > 0 %}
+            <div class="pictures mt-3">
+                {{ form_label(form.pictures) }}
+                {{ form_help(form.pictures) }}
                 {{ form_widget(form.pictures) }}
-            {% else %}
-                <div class="alert alert-primary" role="alert">Il n'y a pour l'instant aucune image dans la bibliothèque</div>
-            {% endif %}
-            {{ form_errors(form.pictures) }}
-
-            <nav aria-label="Collection navigation">
-                <ul class="pagination">
-                </ul>
-            </nav>
+                {{ form_errors(form.pictures) }}
+            </div>
 
             {{ form_end(form) }}
         </section>

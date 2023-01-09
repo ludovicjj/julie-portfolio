@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Gallery;
-use App\Entity\Picture;
 use App\Repository\GalleryRepository;
 use App\Service\UploaderHelper;
 use App\Type\GalleryType;
-use App\Type\GalleryUpdateType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,18 +27,23 @@ class GalleryController extends AbstractController
     }
 
     #[Route('/admin/gallery/new', name: "app_gallery_new")]
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        $form = $this->createForm(GalleryType::class, null, [
-            'action' => $this->generateUrl('api_gallery_create'),
-        ]);
+        $gallery = new Gallery();
+        $form = $this->createForm(GalleryType::class, $gallery, [
+//            'action' => $this->generateUrl('api_gallery_create'),
+        ])->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            dd($form->getData());
+        }
 
         return $this->render('admin/gallery/gallery_add.html.twig', [
             'form' => $form
         ]);
     }
 
-    #[Route('/admin/gallery/update/{id}', name: "app_gallery_update", methods: ['GET', 'POST'])]
+    #[Route('/admin/gallery/update/{id}', name: "app_gallery_update")]
     public function update(
         GalleryRepository $galleryRepository,
         EntityManagerInterface $entityManager,
@@ -49,35 +52,15 @@ class GalleryController extends AbstractController
         Request $request
     ): Response
     {
-        $gallery = $galleryRepository->getGalleryLeftJoinPicture($id);
-
-        if (!$gallery) {
-            throw new NotFoundHttpException();
+        $gallery = $galleryRepository->findOneBy(['id' => $id]);
+        $form = $this->createForm(GalleryType::class, $gallery, [
+//            'action' => $this->generateUrl('api_gallery_create'),
+        ])->handleRequest($request);
+        if ($form->isSubmitted()) {
+            dd($form->getData());
         }
-        $form = $this->createForm(GalleryUpdateType::class, $gallery);
-        $form->handleRequest($request);
-        $pictures = $gallery->getPictures();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $files = $form->get('images')->getData();
-
-            foreach ($files as $file) {
-                $picture = new Picture();
-                $picture->setName(uniqid());
-                $fileName = $uploaderHelper->upload($file);
-                $picture->setPictureFileName($fileName);
-
-                $gallery->addPicture($picture);
-            }
-            $entityManager->flush();
-            $this->addFlash('success', 'La galerie a été mise à jour');
-            return $this->redirectToRoute('app_gallery');
-        }
-
-        return $this->render('admin/gallery/gallery_update.html.twig', [
-            "form" => $form,
-            "pictures" => $pictures,
-            "galleryId" => $gallery->getId()
+        return $this->render('admin/gallery/gallery_add.html.twig', [
+            'form' => $form
         ]);
     }
 

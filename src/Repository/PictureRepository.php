@@ -39,6 +39,16 @@ class PictureRepository extends ServiceEntityRepository
         }
     }
 
+    public function search(string $name): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.name LIKE :name')
+            ->setParameter('name', "%$name%")
+            ->setMaxResults(15)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Picture[] Returns an array of Picture objects
 //     */

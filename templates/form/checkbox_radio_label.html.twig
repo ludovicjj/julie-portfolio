@@ -20,7 +20,8 @@
         <label{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
             {%- if label is not same as(false) -%}
                 {%- if ('picture-label') in label_attr.class -%}
-                    <img src="{{ asset('uploads/pictures/' ~ block('form_label_content')) }}" alt="" class="picture_img">
+                    {{- block('form_label_content') -}}
+{#                    <img src="{{ asset('uploads/pictures/' ~ block('form_label_content')) }}" alt="" class="picture_img">#}
                 {%- else -%}
                     {{- block('form_label_content') -}}
                 {% endif %}
