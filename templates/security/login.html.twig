@@ -2,18 +2,23 @@
 
 {% block title %}Connexion{% endblock %}
 
-{% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="login-form mt-4">
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/security/login.css') }}">
+{% endblock %}
 
+{% block body %}
+    <main class="container">
+        <div class="card card-login">
+            <div class="card-img">
+
+            </div>
+            <div class="card-body">
+                <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
-
-                <form action="{{ path('app_login') }}" method="post" class="row g-3">
-                    <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
-
+                <form action="{{ path('app_login') }}" method="post">
                     <div class="mb-3">
                         <label for="username">Pseudo:</label>
                         <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control">
@@ -24,19 +29,55 @@
                         <input type="password" id="password" name="_password" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label>
-                            <input type="checkbox" name="_remember_me" checked/>
-                            Remember me
-                        </label>
+                        <div class="form-check">
+                            <input type="checkbox" id="remember" name="_remember_me" checked/>
+                            <label for="remember">Se souvenir de moi</label>
+                        </div>
                     </div>
+{#                    <div class="form-check">#}
+{#                        <input type="checkbox" id="rememberme" name="_remember_me" class="form-check-input" checked>#}
+{#                        <label class="form-check-label" for="rememberme">Remember me</label>#}
+{#                    </div>#}
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary">login</button>
+                    <div class="col-12 d-flex">
+                        <button type="submit" class="btn btn-outline-primary">login</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
+{#        <div class="login-form">#}
+
+{#            {% if error %}#}
+{#                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
+{#            {% endif %}#}
+
+{#            <form action="{{ path('app_login') }}" method="post">#}
+{#                <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>#}
+
+{#                <div class="mb-3">#}
+{#                    <label for="username">Pseudo:</label>#}
+{#                    <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control">#}
+{#                </div>#}
+
+{#                <div class="mb-3">#}
+{#                    <label for="password">Mot de passe:</label>#}
+{#                    <input type="password" id="password" name="_password" class="form-control">#}
+{#                </div>#}
+{#                <div class="mb-3">#}
+{#                    <label>#}
+{#                        <input type="checkbox" name="_remember_me" checked/>#}
+{#                        Remember me#}
+{#                    </label>#}
+{#                </div>#}
+
+{#                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">#}
+
+{#                <div class="col-12">#}
+{#                    <button type="submit" class="btn btn-primary">login</button>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+    </main>
 {% endblock %}
