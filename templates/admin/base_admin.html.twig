@@ -7,9 +7,10 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/main-admin.css')}}">
     <link rel="stylesheet" href="{{ asset('css/menu/admin_sidebar.css') }}">
 {% endblock %}
 
 {% block body %}
-    {% include "_partial/admin_side_nav.html.twig" %}
+    {% include "_partials/admin_side_nav.html.twig" %}
 {% endblock %}

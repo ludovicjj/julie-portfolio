@@ -1,21 +1,6 @@
-/** Title-Gallery **/
-.gallery-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2rem 0 1rem;
-    background-color: #ffffff;
-    box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
-    padding: 1rem;
-    border-radius: .5rem;
-}
-.gallery-title a {
-    display: inline-block;
-}
-.container {
-    display: flex;
-    flex-direction: column;
+/** Global **/
+body {
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 /** Scroll Bar **/
@@ -35,4 +20,158 @@
 }
 .lightbox::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, .3);
+}
+
+/** page-wrapper **/
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+}
+
+/** Navbar **/
+.navbar-main {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
+    position: relative;
+    width: 100%;
+}
+.navbar-main.is-hidden {
+    transform: translateY(-100%);
+}
+.navbar-main.is-fixed {
+    position: fixed;
+    transition: transform .3s;
+}
+.navbar-main.is-open .navbar-collapse{
+}
+.navbar-main.is-fixed + .navbar-placeholder {
+    height: 76px;
+}
+/** Navbar Open **/
+.navbar-main.is-open {
+    position: fixed;
+    height: 100vh;
+}
+.navbar-main.is-open .container-fluid {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+.navbar-nav {
+    --bs-nav-link-padding-y: 1rem;
+}
+.navbar-main .container-fluid .navbar-collapse {
+    position: relative;
+    top: calc(50% - 70px);
+    transform: translateY(-50%);
+}
+.navbar-main .container-fluid .navbar-collapse .nav-item{
+    opacity: 0;
+    transition: opacity 0s;
+    text-align: center;
+}
+.navbar-main.is-open .container-fluid .navbar-collapse .nav-item {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+/** Navbar Brand **/
+.navbar-main .navbar-brand {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+}
+.navbar-main .navbar-brand img {
+    width: auto;
+    height: 100%;
+}
+/** Navbar Hamburger **/
+.navbar-main .navbar-toggler {
+    --button-color: #333;
+    background: transparent;
+    border: none;
+    border-radius: 1rem;
+    width: 75px
+}
+.navbar-main .navbar-toggler:focus {
+    box-shadow: none;
+}
+.navbar-toggler .line {
+    transition:
+            y .2s ease-in .2s,
+            rotate .2s ease-in,
+            opacity 0s .2s
+    ;
+    transform-origin: center;
+}
+.navbar-toggler[aria-expanded="true"] .line {
+    transition:
+        y .2s ease-in,
+        rotate .2s ease-in .2s,
+        opacity 0s .2s
+    ;
+}
+.navbar-toggler[aria-expanded="true"] .top,
+.navbar-toggler[aria-expanded="true"] .bottom {
+    y: 45;
+}
+.navbar-toggler[aria-expanded="true"] .top{
+    rotate: 45deg;
+}
+.navbar-toggler[aria-expanded="true"] .middle{
+    opacity: 0;
+}
+.navbar-toggler[aria-expanded="true"] .bottom{
+    rotate: -45deg;
+}
+
+
+/** Navbar Item **/
+.navbar-main .navbar-collapse {
+    justify-content: center;
+}
+.navbar-main .navbar-collapse .navbar-nav {
+    gap: .5rem
+}
+.navbar-main .navbar-collapse a.nav-link {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+@media (min-width: 992px) {
+    .navbar-main.is-open {
+        position: relative;
+        height: auto;
+    }
+    .navbar-main.is-open.is-fixed {
+        position: fixed;
+    }
+    .navbar-main.is-open .container-fluid {
+        flex-wrap: inherit;
+        align-items: center;
+        justify-content: space-between;
+        height: auto;
+        background-color: #FFFFFF;
+    }
+    .navbar-main .container-fluid .navbar-collapse {
+        position: relative;
+        top: auto;
+        transform: translateY(0);
+    }
+    .navbar-nav {
+        --bs-nav-link-padding-y: 0.5rem;
+    }
+    .navbar-main .container-fluid .navbar-collapse .nav-item{
+        opacity: 1;
+        transition: opacity 0s;
+        text-align: initial;
+    }
+    body {
+        overflow: auto !important;
+    }
 }

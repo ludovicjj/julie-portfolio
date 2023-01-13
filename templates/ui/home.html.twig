@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/ui/home.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/component/navbar.js') }}" type="module" defer></script>
+{% endblock %}
+
+{% block body %}
+    <div class="page-wrapper">
+        <header>
+            {{ parent() }}
+            <div class="hero">
+                <strong class="hero-title">Hollywood Paris</strong>
+                <span class="hero-slogan">photographie événementiel</span>
+            </div>
+        </header>
+        <main class="container">
+            <div class="test">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
