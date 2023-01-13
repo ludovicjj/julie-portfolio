@@ -10,35 +10,15 @@ class Menu {
         this.nav = element;
         this.navHeight = this.nav.getBoundingClientRect().height;
         this.navHanmburger = this.nav.querySelector('.navbar-toggler');
-        this.timer = null;
         this.oldScrollY = window.scrollY;
-        this.scrolling = false;
 
 
-        //this.handleScroll = this.onScroll.bind(this);
+        this.handleThrottle = this.throttle.bind(this);
         this.handleClick = this.open.bind(this);
+        this.handleStyle = this.style.bind(this)
 
-        //window.addEventListener('scroll', this.handleScroll, { passive: true });
-
-        // let timerInterval = null;
-        // window.addEventListener('scroll', () => this.scrolling = true, { passive: true });
-        // window.setInterval(this.onScrollTest.bind(this), 300)
-
-        window.addEventListener('scroll', this.throttle(this.style.bind(this), 500).bind(this));
-        this.navHanmburger.addEventListener('click', this.handleClick)
-    }
-
-    onScroll() {
-        let currentScrollY = window.scrollY;
-        let totalScrolled = currentScrollY - this.oldScrollY;
-        //console.log(totalScrolled);
-        this.style(totalScrolled, currentScrollY)
-
-        window.clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-            this.oldScrollY = currentScrollY;
-        },100)
-
+        window.addEventListener('scroll', this.handleThrottle(this.handleStyle, 500));
+        this.navHanmburger.addEventListener('click', this.handleClick, { passive: true })
     }
 
     throttle(callback, limit) {
@@ -71,13 +51,11 @@ class Menu {
             !this.nav.classList.contains('is-hidden') &&
             scrollY > this.navHeight + 50
         ) {
-            console.log("down !")
             this.nav.classList.add('is-hidden')
         }
 
         // user scrolled up
         if ( (totalScrolled < 0) && (this.nav.classList.contains('is-hidden')) ) {
-            console.log('up !');
             this.nav.classList.remove('is-hidden');
             this.nav.classList.add('is-fixed')
         }
@@ -105,13 +83,3 @@ class Menu {
 }
 
 new Menu(document.querySelector('.navbar-main'))
-
-// let scrolling = false;
-//
-// window.addEventListener('scroll', () => scrolling = true)
-// setInterval(() => {
-//     if (scrolling) {
-//         scrolling = false;
-//         // place the scroll handling logic here
-//     }
-// },300);
