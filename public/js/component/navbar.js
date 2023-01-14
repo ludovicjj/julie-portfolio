@@ -10,8 +10,7 @@ class Menu {
         this.nav = element;
         this.navHeight = this.nav.getBoundingClientRect().height;
         this.navHanmburger = this.nav.querySelector('.navbar-toggler');
-        this.oldScrollY = window.scrollY;
-
+        this.threshold = 50;
 
         this.handleThrottle = this.throttle.bind(this);
         this.handleClick = this.open.bind(this);
@@ -23,39 +22,37 @@ class Menu {
 
     throttle(callback, limit) {
         let wait = false; // Initially, we're not waiting
+        let oldScrollY = window.scrollY;
+
         return ()  => { // We return a throttled function
             if (!wait) { // If we're not waiting
-
                 wait = true; // Prevent future invocations
 
-                let currentScrollY = window.scrollY;
-                let total = currentScrollY - this.oldScrollY;
-                callback(total, currentScrollY); // Execute users function
+                let scrollDirection = window.scrollY - oldScrollY;
+                callback(scrollDirection, window.scrollY); // Execute users function
 
                 setTimeout( () => { // After a period of time
                     wait = false; // And allow future invocations
-                    currentScrollY = window.scrollY;
-                    this.oldScrollY = currentScrollY;
-
-                    // Reset navbar
-                    this.resetStyle(currentScrollY)
+                    oldScrollY = window.scrollY
+                    // Reset navbar style
+                    this.resetStyle(window.scrollY)
                 }, limit);
             }
         }
     }
 
-    style(totalScrolled, scrollY) {
-        // user scrolled down more or equal to 100px
+    style(scrollDirection, scrollY) {
+        // user scrolled down
         if (
-            totalScrolled > 0 &&
+            scrollDirection > 0 &&
             !this.nav.classList.contains('is-hidden') &&
-            scrollY > this.navHeight + 50
+            scrollY > this.navHeight + this.threshold
         ) {
             this.nav.classList.add('is-hidden')
         }
 
         // user scrolled up
-        if ( (totalScrolled < 0) && (this.nav.classList.contains('is-hidden')) ) {
+        if (scrollDirection < 0 && this.nav.classList.contains('is-hidden')) {
             this.nav.classList.remove('is-hidden');
             this.nav.classList.add('is-fixed')
         }
@@ -63,10 +60,9 @@ class Menu {
 
     resetStyle(scrollY) {
         if (
-            scrollY < this.navHeight + 50 &&
+            scrollY < this.navHeight + this.threshold &&
             (this.nav.classList.contains('is-hidden') || this.nav.classList.contains('is-fixed'))
         ) {
-            console.log("reset")
             this.nav.classList.remove('is-hidden');
             this.nav.classList.remove('is-fixed');
         }
