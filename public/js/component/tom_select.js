@@ -13,28 +13,29 @@ selectFields.map(function(select) {
         hideSelected: true,
         closeAfterSelect: true,
         valueField: 'id',
-        labelField: 'name',
-        searchField: 'name',
+        labelField: 'imageName',
+        searchField: 'originalName',
         render: {
             option: function(item, escape) {
                 return `<div class="">
 							<div class="icon">
-								<img class="img-fluid" src="/uploads/pictures/${item.pictureFileName}" alt=""/>
+								<img class="img-fluid" src="/uploads/pictures/${ escape(item.imageName)}" alt=""/>
 							</div>
 							<div>
 								<div class="mb-1">
 									<span class="h4">
-										${ escape(item.name) }
+										${ escape(item.originalName) }
 									</span>
-									<span class="text-muted">by ${ escape(item.id) }</span>
+									<span class="text-muted">id: ${ escape(item.id) }</span>
 								</div>
-						 		<div class="description">${ escape(item.pictureFileName) }</div>
+						 		<div class="description">${ escape(item.imageName) }</div>
 							</div>
 						</div>`;
             },
             item: function(item, escape) {
+                console.log(item);
                 return `<div class="">
-							<img class="picture_img" src="/uploads/pictures/${item.pictureFileName}" alt=""/>
+							<img class="picture_img" src="/uploads/pictures/${ escape(item.imageName) }" alt=""/>
 						</div>`;
             }
         },

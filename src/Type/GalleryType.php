@@ -8,7 +8,9 @@ use App\Entity\Picture;
 use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,16 +33,8 @@ class GalleryType extends AbstractType
                 "help" => "Le titre de votre galerie",
                 'required' => true
             ])
-            ->add('cover', FileType::class, [
-                'mapped' => false,
-                'help' => 'Une image qui représentera votre galerie',
-                'label' => "__default-img",
-                'label_html' => true,
-                'label_attr' => [
-                    'class' => "image_label"
-                ]
-            ])
-            ->add('published', CheckboxType::class, [
+            ->add('thumbnail', ThumbnailType::class, [])
+            ->add('state', CheckboxType::class, [
                 "label" => 'public',
                 'required' => false,
                 'help' => 'Définissez si la galerie est privée ou publique',
@@ -58,19 +52,32 @@ class GalleryType extends AbstractType
                 },
             ])
             ->add("uploads", CollectionType::class, [
-                'mapped' => false,
+                "mapped" => false,
                 'label' => false,
-                'entry_type' => FileType::class,
+                'entry_type' => UploadType::class,
                 'entry_options' => [
-                    'label' => "__default-img",
-                    'label_html' => true,
-                    'label_attr' => [
-                        'class' => 'image_label'
-                    ]
+                    'label' => false
                 ],
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'delete_empty' => function (Picture $picture = null) {
+                    return null === $picture || empty($picture->getImageFile());
+                }
             ])
+//            ->add("uploads", CollectionType::class, [
+//                'mapped' => false,
+//                'label' => false,
+//                'entry_type' => FileType::class,
+//                'entry_options' => [
+//                    'label' => "__default-img",
+//                    'label_html' => true,
+//                    'label_attr' => [
+//                        'class' => 'image_label'
+//                    ]
+//                ],
+//                'allow_add' => true,
+//                'allow_delete' => true
+//            ])
             ->add("pictures", CustomSelectType::class, [
                 'label' => 'Bibliothèque',
                 'class' => Picture::class,

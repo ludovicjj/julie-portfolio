@@ -2,23 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\PictureRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\ThumbnailRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
-#[ORM\Entity(repositoryClass: PictureRepository::class)]
+#[ORM\Entity(repositoryClass: ThumbnailRepository::class)]
 #[Vich\Uploadable]
-class Picture
+class Thumbnail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Vich\UploadableField(mapping: 'picture_images', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
+    #[Vich\UploadableField(mapping: 'thumbnail_images', fileNameProperty: 'imageName', size: 'imageSize', originalName: 'originalName')]
     private ?File $imageFile = null;
 
     #[ORM\Column(type: 'string')]
@@ -33,13 +31,8 @@ class Picture
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Gallery::class, mappedBy: 'pictures')]
-    private Collection $galleries;
-
-    public function __construct()
-    {
-        $this->galleries = new ArrayCollection();
-    }
+    #[ORM\OneToOne(mappedBy: 'thumbnail', cascade: ['persist', 'remove'])]
+    private ?Gallery $gallery = null;
 
     public function getId(): ?int
     {
@@ -102,29 +95,19 @@ class Picture
         return $this->updatedAt;
     }
 
-    /**
-     * @return Collection<int, Gallery>
-     */
-    public function getGalleries(): Collection
+    public function getGallery(): ?Gallery
     {
-        return $this->galleries;
+        return $this->gallery;
     }
 
-    public function addGallery(Gallery $gallery): self
+    public function setGallery(Gallery $gallery): self
     {
-        if (!$this->galleries->contains($gallery)) {
-            $this->galleries->add($gallery);
-            $gallery->addPicture($this);
+        // set the owning side of the relation if necessary
+        if ($gallery->getThumbnail() !== $this) {
+            $gallery->setThumbnail($this);
         }
 
-        return $this;
-    }
-
-    public function removeGallery(Gallery $gallery): self
-    {
-        if ($this->galleries->removeElement($gallery)) {
-            $gallery->removePicture($this);
-        }
+        $this->gallery = $gallery;
 
         return $this;
     }

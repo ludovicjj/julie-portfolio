@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Picture;
 use App\Service\UploaderHelper;
-use App\Type\PictureType;
+use App\Type\UploadType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,7 +37,7 @@ class PictureController extends AbstractController
         UploaderHelper $uploaderHelper
     ): Response {
 
-        $form = $this->createForm(PictureType::class);
+        $form = $this->createForm(UploadType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

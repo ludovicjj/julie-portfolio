@@ -58,7 +58,7 @@ class CustomSelectType extends AbstractType
     {
         return $collection
             ->map(function($picture) {
-                return new ChoiceView($picture, (string)$picture->getId(), $picture->getName());
+                return new ChoiceView($picture, (string)$picture->getId(), $picture->getImageName());
             })
             ->toArray();
     }

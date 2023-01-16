@@ -19,7 +19,7 @@ class GalleryController extends AbstractController
     #[Route('/admin/gallery', name: "app_gallery")]
     public function index(GalleryRepository $galleryRepository): Response
     {
-        $galleries = $galleryRepository->getGalleryLeftJoinPicture();
+        $galleries = $galleryRepository->getGalleriesJoinThumbnail();
 
         return $this->render('admin/gallery/gallery_index.html.twig', [
             "galleries" => $galleries
@@ -27,7 +27,7 @@ class GalleryController extends AbstractController
     }
 
     #[Route('/admin/gallery/new', name: "app_gallery_new")]
-    public function create(Request $request): Response
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $gallery = new Gallery();
         $form = $this->createForm(GalleryType::class, $gallery, [
@@ -35,7 +35,15 @@ class GalleryController extends AbstractController
         ])->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            dd($form->getData());
+            $gallery = $form->getData();
+            $uploadedPicture = $form->get('uploads')->getData();
+
+            foreach ($uploadedPicture as $picture) {
+                $gallery->addPicture($picture);
+            }
+
+            $entityManager->persist($gallery);
+            $entityManager->flush();
         }
 
         return $this->render('admin/gallery/gallery_add.html.twig', [

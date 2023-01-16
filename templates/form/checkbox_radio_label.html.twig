@@ -59,3 +59,32 @@
         {%- endif -%}
     {%- endif -%}
 {%- endblock form_label_content -%}
+
+{%- block vich_image_widget -%}
+        {%- if errors|length > 0 -%}
+            {%- set attr = attr|merge({class: (attr.class|default('') ~ ' is-invalid')|trim}) -%}
+        {%- endif -%}
+        {{- form_widget(form.file, {attr: attr}) -}}
+        {%- if form.delete is defined -%}
+            {{- form_row(form.delete) -}}
+        {%- endif -%}
+
+        {%- if image_uri -%}
+{#            <a href="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}" download>#}
+{#                <img src="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}" alt="" />#}
+{#            </a>#}
+            <label for="{{ form.vars.id ~ '_file' }}" class="image_label">
+                <img src="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}" alt="" />
+            </label>
+        {% else %}
+            <label for="{{ form.vars.id ~ '_file' }}" class="image_label">
+                <img src="{{ asset('images/default-image.jpg') }}" class="default_img" alt="">
+            </label>
+        {%- endif -%}
+        {%- if download_uri -%}
+            <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}" download>
+                {{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}
+            </a>
+        {%- endif -%}
+
+{%- endblock -%}

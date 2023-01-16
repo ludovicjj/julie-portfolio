@@ -46,23 +46,23 @@
                         {{ form_widget(form.tag) }}
                         {{ form_errors(form.tag) }}
                     </div>
-                    <div class="mb-0 published">
+                    <div class="mb-0 state">
                         <span class="d-block mb-2">Visibilité</span>
-                        {{ form_label(form.published) }}
-                        {{ form_help(form.published) }}
-                        {{ form_widget(form.published) }}
-                        {{ form_errors(form.published) }}
+                        {{ form_label(form.state) }}
+                        {{ form_help(form.state) }}
+                        {{ form_widget(form.state) }}
+                        {{ form_errors(form.state) }}
                     </div>
                 </div>
 
 
                 <div class="grid-item-right">
-                    <div class="cover-wrapper target-preview">
+                    <div class="thumbnail-wrapper target-preview">
                         <span class="d-block mb-2">Images à la une *</span>
-                        {{ form_help(form.cover) }}
-                        {{ form_widget(form.cover) }}
-                        {{ form_label(form.cover) }}
-                        {{ form_errors(form.cover) }}
+                        {% for thumbnail in form.thumbnail.children %}
+                            {{ form_help(thumbnail) }}
+                            {{ form_widget(thumbnail) }}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

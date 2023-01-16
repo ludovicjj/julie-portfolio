@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Gallery;
+use App\Entity\Thumbnail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,6 +40,13 @@ class GalleryRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getGalleriesJoinThumbnail()
+    {
+        $dql = "SELECT g, t FROM App\Entity\Gallery AS g INNER JOIN g.thumbnail AS t";
+        $query = $this->getEntityManager()->createQuery($dql);
+        return $query->getResult();
     }
 
     public function getGalleryInnerJoinPicture(int $id = null, int $pictureId = null)

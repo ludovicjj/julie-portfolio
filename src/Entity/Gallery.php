@@ -30,19 +30,20 @@ class Gallery
     #[Slug(fields: ['title'])]
     private ?string $slug = null;
 
-    #[ORM\Column]
-    private bool $published;
-
-    #[ORM\Column(length: 255)]
-    private ?string $cover = null;
+    #[ORM\Column(type: 'boolean')]
+    private bool $state;
 
     #[ORM\ManyToOne(inversedBy: 'galleries')]
     private ?Tag $tag = null;
 
+    #[ORM\OneToOne(inversedBy: 'gallery', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Thumbnail $thumbnail = null;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
-        $this->published = false;
+        $this->state = false;
     }
 
     public function getId(): ?int
@@ -98,28 +99,16 @@ class Gallery
         return $this;
     }
 
-    public function getPublished(): bool
+    public function getState(): bool
     {
-        return $this->published;
+        return $this->state;
     }
 
-    public function setPublished(bool $published): self
+    public function setState(string $state): self
     {
-        $this->published = $published;
+        $this->state = $state;
 
         return $this;
-    }
-
-    public function setCover(string $cover): self
-    {
-        $this->cover = $cover;
-
-        return $this;
-    }
-
-    public function getCover(): ?string
-    {
-        return $this->cover;
     }
 
     public function getTag(): ?Tag
@@ -133,4 +122,17 @@ class Gallery
 
         return $this;
     }
+
+    public function getThumbnail(): ?Thumbnail
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(Thumbnail $thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
 }
